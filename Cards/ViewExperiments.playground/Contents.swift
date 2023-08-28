@@ -30,7 +30,7 @@ import PlaygroundSupport
         // создание корневого view
         private func getRootView() -> UIView {
             let view = UIView()
-            view.backgroundColor =  #colorLiteral(red: 0, green: 1, blue: 1, alpha: 1)
+            view.backgroundColor =  #colorLiteral(red: 0.4215908051, green: 0.6531054974, blue: 0.6920796037, alpha: 1)
             return view
         }
         // создание зеленoго квадрата в нутри корневого view
@@ -61,6 +61,14 @@ import PlaygroundSupport
             let viewFrame = CGRect(x: 50, y: 300, width: 100, height: 100)
             let view = UIView(frame: viewFrame)
             view.backgroundColor = #colorLiteral(red: 0.975792706, green: 1, blue: 0.2305567265, alpha: 1)
+            view.layer.borderWidth = 5
+            view.layer.borderColor = #colorLiteral(red: 1, green: 0.4109809399, blue: 0.4177432656, alpha: 1)
+            view.layer.cornerRadius = 10
+            view.layer.shadowOpacity = 0.85
+            view.layer.shadowRadius = 20
+            view.layer.shadowColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+            view.layer.shadowOffset = CGSize(width: 10, height: 20)
+            view.layer.opacity = 0.9
             return view
         }
         private func setCentr(view moveView: UIView,toCenterOfView baseView: UIView) {

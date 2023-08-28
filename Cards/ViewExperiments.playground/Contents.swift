@@ -69,6 +69,19 @@ import PlaygroundSupport
             view.layer.shadowColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
             view.layer.shadowOffset = CGSize(width: 10, height: 20)
             view.layer.opacity = 0.9
+            
+            
+            
+            // создание дочернего слоя
+            let layer = CALayer()
+            // изменение фонового цвета
+            layer.backgroundColor = #colorLiteral(red: 1, green: 0, blue: 0.3833371699, alpha: 1)
+            // изменение размеров
+            layer.frame = CGRect(x: 10, y: 10, width: 20, height: 20)
+            // радиус
+            layer.cornerRadius = 10
+            // добавление в иерархию
+            view.layer.addSublayer(layer)
             return view
         }
         private func setCentr(view moveView: UIView,toCenterOfView baseView: UIView) {

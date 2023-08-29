@@ -17,7 +17,8 @@ import PlaygroundSupport
             let yellowView = getYellowView()
             // фиолетовый вью
             let filletView = getFilletView()
-            
+            // поворот красного представления
+            greenView.transform = CGAffineTransform(rotationAngle: .pi/5)
             setCentr(view: blyView, toCenterOfView: greenView)
             // выравнить фиолетове вью по центру
             filletView.center = blyView.center
@@ -82,19 +83,14 @@ import PlaygroundSupport
             layer.cornerRadius = 10
             // добавление в иерархию
             view.layer.addSublayer(layer)
+            
+            print(view.frame)
+            print(view.bounds)
+            
             return view
         }
         private func setCentr(view moveView: UIView,toCenterOfView baseView: UIView) {
-            // размеры вложенного предстовления
-            let moveViewWidth = moveView.frame.width
-            let moveViewHeight = moveView.frame.height
-            // размеры родительского предстовления
-            let baseViewWidth = baseView.frame.width
-            let baseViewHeight = baseView.frame.height
-            // вычисление и изменение координат
-            let newXCoordinate = (baseViewWidth - moveViewWidth) / 2
-            let newYCoordinate = (baseViewHeight - moveViewHeight) / 2
-            moveView.frame.origin = CGPoint(x: newXCoordinate, y: newYCoordinate)
+            moveView.center = CGPoint(x: baseView.bounds.midX, y: baseView.bounds.midY)
         }
         
     }

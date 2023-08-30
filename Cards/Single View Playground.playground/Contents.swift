@@ -4,19 +4,16 @@ import UIKit
 import PlaygroundSupport
 
 class MyViewController : UIViewController {
-        override func loadView() {
-            let view = UIView()
-            view.backgroundColor = .white
-
-            let label = UILabel()
-            label.frame = CGRect(x: 150, y: 200, width: 200, height: 20)
-            label.text = "Hello World!"
-            label.textColor = .black
-
-            view.addSubview(label)
-            self.view = view
-        }
+    override func loadView() {
+    let view = UIView()
+        view.backgroundColor = #colorLiteral(red: 0.6776916385, green: 1, blue: 0.9803161025, alpha: 1)
+        self.view = view
+    // круг
+    view.layer.addSublayer(CircleShape(size: CGSize(width: 200, height: 150), fillColor: UIColor.gray.cgColor))
+    view.layer.addSublayer(SquareShape(size: CGSize(width: 150, height: 100), fillColor: UIColor.blue.cgColor))
+    view.layer.addSublayer(CrossShape(size: CGSize(width: 100, height: 50), fillColor: UIColor.green.cgColor))
     }
+}
 
 // Present the view controller in the Live View window
     PlaygroundPage.current.liveView = MyViewController()
@@ -59,5 +56,43 @@ extension ShapeLayerProtocol {
         fatalError("init() не может быть использован для создания экземпляра")
     }
 }
+class SquareShape: CAShapeLayer, ShapeLayerProtocol {
+    required init(size: CGSize, fillColor: CGColor) {
+        super.init()
+// сторона равна меньшей из сторон
+let edgeSize = ([size.width, size.height].min() ?? 0)
+        // рисуем квадрат
+        let rect = CGRect(x: 0, y: 0, width: edgeSize, height: edgeSize)
+        let path = UIBezierPath(rect: rect)
+        path.close()
+        // инициализируем созданный путь
+        self.path = path.cgPath
+        // изменяем цвет
+        self.fillColor = fillColor
+        }
+            required init?(coder: NSCoder) {
+                fatalError("init(coder:) has not been implemented")
+        }
+    
+}
 
+class CrossShape: CAShapeLayer, ShapeLayerProtocol {
+    required init(size: CGSize, fillColor: CGColor) {
+super.init()
+// рисуем крест
+let path = UIBezierPath()
+path.move(to: CGPoint(x: 0, y: 0))
+path.addLine(to: CGPoint(x: size.width, y: size.height))
+path.move(to: CGPoint(x: size.width, y: 0))
+path.addLine(to: CGPoint(x: 0, y: size.height))
+// инициализируем созданный путь
+self.path = path.cgPath
+// изменяем цвет
+self.strokeColor = fillColor
+self.lineWidth = 5
+}
+required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented")
+}
+    
+}
 

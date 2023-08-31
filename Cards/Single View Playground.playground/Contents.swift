@@ -134,7 +134,34 @@ class BackSideCircle: CAShapeLayer, ShapeLayerProtocol {
     self.lineWidth = 1
    }
    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented")
+   }
 }
 
+class BackSideLine: CAShapeLayer, ShapeLayerProtocol {
+    required init(size: CGSize, fillColor: CGColor) {
+        super.init()
+        let path = UIBezierPath()
+        // рисуем 15 линий
+        for _ in 1...15 {
+            // координаты начала очередной линии
+            let randomXStart = Int.random(in: 0...Int(size.width))
+            let randomYStart = Int.random(in: 0...Int(size.height))
+            // координаты конца очередной линии
+            let randomXEnd = Int.random(in: 0...Int(size.width))
+            let randomYEnd = Int.random(in: 0...Int(size.height))
+            // смещаем указатель к началу линии
+            path.move(to: CGPoint(x: randomXStart, y: randomYStart))
+            // рисуем линию
+            path.addLine(to: CGPoint(x: randomXEnd, y: randomYEnd))
+        }
+        // инициализируем созданный путь
+        self.path = path.cgPath
+        // изменяем стиль линий
+        self.strokeColor = fillColor
+        self.lineWidth = 3
+        self.lineCap = .round
+    }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
-

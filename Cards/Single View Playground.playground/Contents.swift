@@ -4,16 +4,23 @@ import UIKit
 import PlaygroundSupport
 
 class MyViewController : UIViewController {
+  
+
     override func loadView() {
     let view = UIView()
         view.backgroundColor = #colorLiteral(red: 0.6776916385, green: 1, blue: 0.9803161025, alpha: 1)
         self.view = view
-    // круг
-    view.layer.addSublayer(CircleShape(size: CGSize(width: 200, height: 150), fillColor: UIColor.gray.cgColor))
-    view.layer.addSublayer(SquareShape(size: CGSize(width: 150, height: 100), fillColor: UIColor.blue.cgColor))
-    view.layer.addSublayer(CrossShape(size: CGSize(width: 100, height: 50), fillColor: UIColor.green.cgColor))
+        // игральная карточка рубашкой вверх
+        let firstCardView = CardView<CircleShape > (frame: CGRect(x: 0, y: 0, width: 120, height: 150), color: .red)
+        self.view.addSubview(firstCardView)
+        // игральная карточка лицевой стороной вверх
+        let secondCardView = CardView<CircleShape>(frame: CGRect(x: 200, y: 0, width: 120, height: 150), color: .red)
+        self.view.addSubview(secondCardView)
+        secondCardView.isFlipped = true
+        self.view.addSubview(firstCardView)
+        }
     }
-}
+
 
 // Present the view controller in the Live View window
     PlaygroundPage.current.liveView = MyViewController()
@@ -174,7 +181,12 @@ protocol FlippableView: UIView {
 
 class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
     
-    var isFlipped: Bool = false
+    var isFlipped: Bool = false {
+        didSet {
+    self.setNeedsDisplay()
+        }
+    }
+
     var flipCompletionHandler: ((FlippableView) -> Void)?
     func flip() {}
     
@@ -183,7 +195,9 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
     init(frame: CGRect, color: UIColor) {
         super.init(frame: frame)
         self.color = color
-  }
+    
+        setupBorders()
+ }
     required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
    }
@@ -208,6 +222,15 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
         return view
         
     }
+    // радиус закругления
+    var cornerRadius = 20
+    // настройка границ
+    private func setupBorders(){
+        self.clipsToBounds = true
+        self.layer.cornerRadius = CGFloat(cornerRadius)
+        self.layer.borderWidth = 2
+        self.layer.borderColor = UIColor.black.cgColor
+    }
         // возвращает вью для обратной стороны карточки
         private func getBackSideView() -> UIView {
             let view = UIView(frame: self.bounds)
@@ -222,4 +245,18 @@ class CardView<ShapeType: ShapeLayerProtocol>: UIView, FlippableView {
     }
         return view
         }
+    
+    override func draw(_ rect: CGRect) {
+    // удаляем добавленные ранее дочерние представления
+        backSideView.removeFromSuperview()
+        frontSideView.removeFromSuperview()
+    // добавляем новые представления
+        if isFlipped {
+        self.addSubview(backSideView)
+        self.addSubview(frontSideView)
+        } else {
+        self.addSubview(frontSideView)
+        self.addSubview(backSideView) }
+    }
+
 }
